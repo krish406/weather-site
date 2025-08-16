@@ -88,17 +88,17 @@ function Form() {
           Submit
         </button>
       </form>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {fetched && error ? (
-          <div>{error}</div>
+          <div className="flex w-full justify-center">{error}</div>
         ) : fetched ? (
-          <Display {...weather}></Display>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <Display {...weather}></Display>
+          </div>
         ) : (
           <div className="col-span-4 text-center text-gray-400 italic">
             Enter a location and submit to see weather data.
           </div>
         )}
-      </div>
     </div>
   );
 }
