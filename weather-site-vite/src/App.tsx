@@ -6,25 +6,25 @@ function convertTemp(temp: string) {
   return Math.round(calculatedTemp * 10) / 10; //left shift the digit after the decimal and remove the rest of the digits
 }
 
-function Display(weather : {[key: string]: any}){
-  console.log(weather)
-  return <>
-    {Object.keys(weather).map((data, index) => (
-      <div
-        key={index}
-        className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col items-center shadow-sm"
-      >
-        <span className="text-sm text-blue-500 font-medium mb-2 uppercase">
-          {data}
-        </span>
-        <span className="text-lg">
-          {index <= 3
-            ? convertTemp(weather[data]) + "°F"
-            : weather[data]}
-        </span>
-      </div>
-    ))}
-  </>
+function Display(weather: { [key: string]: any }) {
+  console.log(weather);
+  return (
+    <>
+      {Object.keys(weather).map((data, index) => (
+        <div
+          key={index}
+          className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col items-center shadow-sm"
+        >
+          <span className="text-sm text-blue-500 font-medium mb-2 uppercase">
+            {data}
+          </span>
+          <span className="text-lg">
+            {index <= 3 ? convertTemp(weather[data]) + "°F" : weather[data]}
+          </span>
+        </div>
+      ))}
+    </>
+  );
 }
 
 function Form() {
@@ -39,6 +39,7 @@ function Form() {
 
     try {
       setFetched(false);
+      setError(null);
       const response = await fetch(
         `http://localhost:8080/?${params.toString()}`
       );
@@ -46,13 +47,12 @@ function Form() {
       if (response.ok) {
         setFetched(true);
         setWeather(data.main);
-      }
-      else{
-        throw new Error(response.statusText)
+      } else {
+        throw new Error(data.message);
       }
     } catch (error) {
       if (error instanceof Error) {
-        setFetched(true)
+        setFetched(true);
         setError(error.message);
       }
     }
@@ -96,7 +96,8 @@ function Form() {
         ) : (
           <div className="col-span-4 text-center text-gray-400 italic">
             Enter a location and submit to see weather data.
-          </div>)}
+          </div>
+        )}
       </div>
     </div>
   );
