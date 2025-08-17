@@ -35,6 +35,7 @@ app.get("/", async (req, res) => {
 
     let latitude = response.data[0].lat;
     let longitude = response.data[0].lon;
+    let name = response.data[0].display_name;
 
     url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WeatherAPIKey}`;
     response = await axios.get(url);
@@ -43,7 +44,7 @@ app.get("/", async (req, res) => {
       return res.status(404).send({message: "Could not get weather"});
     }
 
-    res.json({ weather: response.data.weather, main: response.data.main });
+    res.json({ weather: response.data.weather, main: response.data.main, name: name });
 
   } catch (error) {
     console.log(error.message);

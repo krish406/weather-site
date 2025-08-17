@@ -6,6 +6,21 @@ function convertTemp(temp: string) {
   return Math.round(calculatedTemp * 10) / 10; //left shift the digit after the decimal and remove the rest of the digits
 }
 
+function Image(code: { [key: string]: any }) {
+  const iconCode = code["0"]?.icon;
+  if (!iconCode) return null;
+
+  const url = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  return (
+    <div>
+      <img
+        src={url}
+        alt="Weather Icon"
+      />
+    </div>
+  );
+}
+
 function Display(weather: { [key: string]: any }) {
   console.log(weather);
   return (
@@ -31,6 +46,8 @@ function Form() {
   const [name, setName] = useState("");
   const [fetched, setFetched] = useState(false);
   const [weather, setWeather] = useState({});
+  const [condition, setCondition] = useState({});
+  const [location, setLocation] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = async () => {
@@ -46,7 +63,9 @@ function Form() {
       const data = await response.json();
       if (response.ok) {
         setFetched(true);
+        setCondition(data.weather);
         setWeather(data.main);
+        setLocation(data.name);
       } else {
         throw new Error(data.message);
       }
@@ -88,17 +107,45 @@ function Form() {
           Submit
         </button>
       </form>
-        {fetched && error ? (
-          <div className="flex w-full justify-center">{error}</div>
-        ) : fetched ? (
+      {fetched && error ? (
+        <div className="flex w-full justify-center">{error}</div>
+      ) : fetched ? (
+        <div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div className="row-span-2 col-span-2 border bg-blue-200 border-blue-200 rounded-lg p-4 box-shadow">
+              <div className="flex justify-center w-full">
+                <Image {...condition} />
+              </div>
+              <div className="w-full flex flex-col items-center">
+                <div className="flex flex-col items-center gap-2 mb-2">
+                  <span className=" text-blue-900 uppercase">
+                    Weather Type:
+                  </span>
+                  <span className=" text-blue-700">
+                    {condition["0" as keyof typeof condition]["main"]}
+                  </span>
+                </div>
+                <div className="flex flex-col items-center gap-2 mb-2">
+                  <span className="text-blue-900 uppercase">
+                    Description:
+                  </span>
+                  <span className="text-blue-700">
+                    {condition["0" as keyof typeof condition]["description"]}
+                  </span>
+                </div>
+              </div>
+            </div>
             <Display {...weather}></Display>
           </div>
-        ) : (
-          <div className="col-span-4 text-center text-gray-400 italic">
-            Enter a location and submit to see weather data.
-          </div>
-        )}
+          <p className="flex justify-center pt-5 text-center text-gray-400 italic">
+            Fetched Data From: {location}
+          </p>
+        </div>
+      ) : (
+        <div className="text-center text-gray-400 italic">
+          Enter a location and submit to see weather data.
+        </div>
+      )}
     </div>
   );
 }
