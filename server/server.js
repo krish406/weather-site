@@ -11,7 +11,10 @@ const GeocodingAPIKey = process.env.GEOAPI;
 const WeatherAPIKey = process.env.WEATHERAPI;
 
 let corsOptions = {
-  origin: "https://weather-site-frontend.onrender.com"
+  origin: [
+    "https://weather-site-frontend.onrender.com",
+    "http://localhost:5173",
+  ],
 };
 
 app.use(express.urlencoded({ extended: true }));
@@ -42,15 +45,20 @@ app.get("/send", async (req, res) => {
 
     url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WeatherAPIKey}`;
     response = await axios.get(url);
-    
-    if (!(response && response.status === 200 && response.statusText === 'OK')){
-      return res.status(404).send({message: "Could not get weather"});
+
+    if (
+      !(response && response.status === 200 && response.statusText === "OK")
+    ) {
+      return res.status(404).send({ message: "Could not get weather" });
     }
 
-    res.json({ weather: response.data.weather, main: response.data.main, name: name });
-
+    res.json({
+      weather: response.data.weather,
+      main: response.data.main,
+      name: name,
+    });
   } catch (error) {
-    console.log('testing testing');
+    console.log("testing testing");
     console.log(error.message);
     res.status(404).send({ message: error.message });
   }
