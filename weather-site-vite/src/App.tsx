@@ -58,7 +58,7 @@ function Form() {
       setFetched(false);
       setError(null);
       const response = await fetch(
-        `http://localhost:8080/?${params.toString()}`
+        `https://weather-site-t2cg.onrender.com/?${params.toString()}`
       );
       const data = await response.json();
       if (response.ok) {

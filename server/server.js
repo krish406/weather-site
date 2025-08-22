@@ -1,11 +1,14 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import axios from "axios";
+import process from "process";
 
 const app = express();
 const port = 8080;
-const GeocodingAPIKey = "689a7c3ac6e06176779337jtu0b52ce";
-const WeatherAPIKey = "b1774f5021deae419c5e02b4304e7a3d";
+const GeocodingAPIKey = process.env.GEOAPI;
+const WeatherAPIKey = process.env.WEATHERAPI;
 
 let corsOptions = {
   origin: "http://localhost:5173",
