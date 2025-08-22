@@ -58,7 +58,7 @@ function Form() {
       setFetched(false);
       setError(null);
       const response = await fetch(
-        `https://weather-site-t2cg.onrender.com/?${params.toString()}`
+        `https://weather-site-t2cg.onrender.com/send/?${params.toString()}`
       );
       const data = await response.json();
       if (response.ok) {

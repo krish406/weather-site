@@ -17,7 +17,7 @@ let corsOptions = {
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
-app.get("/", async (req, res) => {
+app.get("/send", async (req, res) => {
   console.log("received request");
   const loc = req.query.location;
 
