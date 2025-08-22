@@ -50,6 +50,7 @@ app.get("/", async (req, res) => {
     res.json({ weather: response.data.weather, main: response.data.main, name: name });
 
   } catch (error) {
+    console.log('testing testing');
     console.log(error.message);
     res.status(404).send({ message: error.message });
   }
