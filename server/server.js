@@ -11,7 +11,7 @@ const GeocodingAPIKey = process.env.GEOAPI;
 const WeatherAPIKey = process.env.WEATHERAPI;
 
 let corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://weather-site-frontend.onrender.com"
 };
 
 app.use(express.urlencoded({ extended: true }));
